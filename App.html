@@ -1,0 +1,131 @@
+<script type="text/babel">
+//this component calls the function to get data and pass to the child component
+
+
+  class App extends React.Component {
+    constructor() {
+      super();
+      this.timeOut = 0 ;
+      this.state = {
+        comName:[] ,
+        isDone : false,
+        childData : ""
+      }
+
+    }
+
+      // data to state when app is opend
+    componentDidMount() {
+      google.script.run.withSuccessHandler(this.setCompanyName).getListofCompany();
+    }
+
+    // data to state
+
+    setCompanyName = (value)  => {
+      this.setState({comName: value});
+      this.setState({isDone : true});
+    }
+
+    // SearchBar will be inherited to get input Data from user.
+
+    getInputData = (value) => {
+
+     this.setState({childData: value});
+
+    }
+
+    // Search by Name and it returns row number and the matched row numbver will   be displayed
+    getCompanyRowNum = () => {
+      google.script.run.withSuccessHandler(this.searchByFounderName).searchByMemberName(this.state.childData);
+      console.log("first works");
+
+    }
+
+
+
+
+
+    // input is not case sensitive, if user input is null, A(a companyListItem )'s show value would be true
+    searchByCompanyName = (value) => {
+
+    let result;
+
+    value = this.state.childData.toLowerCase();
+
+    if (value == null || value == "" || value == " " ) { console.log("err");
+
+    result = this.state.comName.map((a)=>{
+
+    // recreate A
+    return {name: a.name,validation: a.validation,show: true,row: a.row}
+
+
+
+
+    });
+
+
+    }
+    //input is not null , String.includes function run and Search matched company name
+    else {
+
+   result = this.state.comName.map((a)=>{
+
+   let change =  a.name.toLowerCase().includes(value) ? a.show = true : false ;
+
+
+    // recreate if matched a's Show value is true and shown
+    return {name: a.name,validation: a.validation,show: change,row: a.row}
+    }
+
+    );
+
+    }
+
+
+    // update state and rerender
+    this.setState({comName: result});
+
+    console.log(result);
+
+    }
+
+
+
+    //row number is matched the show value will change to true otherwise false
+    searchByFounderName = (value) => {
+
+    console.log(value);
+
+    let result;
+
+     result = this.state.comName.map((a)=>{
+
+
+
+    let change = value.includes(a.row) ? a.show = true : false ;
+
+
+    return {name: a.name,validation: a.validation,show: change,row: a.row};
+    }
+
+    );
+
+     this.setState({comName: result});
+
+   }
+
+
+   render () {
+      return (
+        <div className = 'container mx-100' >
+
+           <SearchBar getInputData = {this.getInputData} data ={this.state.childData} search = {this.searchByCompanyName} search2 = {this.getCompanyRowNum} timeOut ={this.timeOut} />
+          <CompanyList passingValue={this.state.comName} isDone = {this.state.isDone} />
+
+
+        </div>
+      );
+    }
+  }
+</script>

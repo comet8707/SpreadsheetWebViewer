@@ -1,0 +1,119 @@
+<script type="text/babel">
+
+// Search Bar Component
+
+class SearchBar extends React.Component {
+
+
+
+constructor(props) {
+      super(props);
+      this.timeOut = 0;
+
+
+     this.state = {
+
+       searchOption : "company"
+
+     }
+
+     }
+
+
+ // when key is up user input gose to parents
+ onKeyUpHandle = (e) => {
+
+
+ let userInput = e.target.value;
+
+ if(this.timeOut)
+
+ {clearTimeout(this.timeOut);}
+
+
+
+  this.timeOut = setTimeout(() => {
+
+  this.props.getInputData(userInput);
+
+ this.searchOptionHandler();
+
+
+ },500);
+
+ }
+
+
+// when option change input will reset update state too
+
+handleChange = (e) => {
+
+
+this.setState({searchOption : e.target.value });
+console.log(this.state.searchOption);
+this.inputReset();
+
+}
+
+
+// by the option search function will run
+searchOptionHandler= () =>  {
+switch (this.state.searchOption) {
+
+case "company" : this.props.search();
+ break;
+ case "member" : this.props.search2();
+ break;
+ default: this.props.search();
+          console.log("default");
+          console.log(this.state.searchOption);
+
+}
+
+}
+
+// prevent Enter key's Default
+
+onKeyPressHandle = (e) => {
+ if (event.which === 13) {
+    event.preventDefault();
+  }
+
+
+}
+
+// input reset
+inputReset = () =>{
+
+  document.getElementById("searchInput").reset();
+
+}
+
+
+
+
+  render(){
+
+	return (
+
+    <form id="searchInput">
+     <div className="input-group input-group-lg mb-3  text-center">
+  <div className="input-group-prepend ">
+    <span className="input-group-text fas fa-search" id="inputGroup-sizing-lg"></span>
+   <select value={this.state.searchOption} onChange={this.handleChange}>
+            <option value="company">Search by CompanyName</option>
+            <option value="member">Search by MemberName</option>
+          </select>
+  </div>
+
+  <input type="text"  className="form-control"onKeyUp = {this.onKeyUpHandle}  onKeyPress = {this.onKeyPressHandle} />
+</div>
+    </form>
+
+
+
+	);
+    }
+}
+
+</script>

@@ -1,0 +1,111 @@
+<script type="text/babel">
+
+class CompanyListItem extends React.Component {
+
+    constructor(props) {
+
+      super(props);
+
+      // data is a company's infomation its from the sheet
+      this.state = {
+        data : [],
+        // toggle switch
+        toggle : false,
+        // isLoaded for redudency , once the function got data won't run again to gain data;
+        isLoaded : false,
+        // untill data loaded , to show message 'please wait a moment'
+        isDone : false
+     }
+    }
+
+
+    // get data by the row number
+    GetCompanyinfo = (num) => {
+
+    google.script.run.withSuccessHandler(this.setData).GetCompanyinfo(num);
+
+    }
+
+
+    //data pass to state
+    setData= (a) => {
+
+
+     this.setState({data: a});
+     this.setState({isDone: true});
+
+
+    }
+
+    // handle click event toggle switch is include
+
+   clickHandeler = () => {
+
+   console.log(this.props);
+   console.log(this.props);
+
+    let toggleSwitch = this.state.toggle;
+
+    if (toggleSwitch == false ) {
+
+    this.setState({toggle : true });
+
+    this.state.isLoaded ? null: this.GetCompanyinfo(this.props.list[0].row);
+
+    this.setState({isLoaded:true});
+    }
+
+    else {this.setState({toggle : false });}
+
+    console.log("dd");
+}
+
+
+
+    render () {
+
+
+
+      //styling with Bootstrap
+
+      let className = 'text-center list-group-item list-group-item-action list-group-item-primary mb-3 rounded shadow-sm list-group-flush '+ this.props.list[0].show;
+
+      // if it is not activated the cell background colour would be dark
+       this.props.list[0].validation == "iBoost Zone Member" ?
+              null  :
+            className += ' list-group-item-dark ' ;
+
+
+    return (
+
+
+    <div>
+
+
+
+    <li className = {className} onClick= { this.clickHandeler  } >
+
+
+    <h4>{this.props.list[0].name} </h4>
+
+
+
+    </li>
+
+
+
+    {
+    this.state.toggle ?
+           <CompanyInfo  info={this.state.data} isDone = {this.state.isDone} companyName={this.props.list[0].name} /> :
+           null
+    }
+
+    </div>
+
+    );
+    }
+
+
+
+}
+</script>

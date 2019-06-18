@@ -1,0 +1,79 @@
+<style>
+#members {
+
+
+}
+
+#members td, #members th {
+
+}
+
+#members tr:nth-child(even){background-color: #f2f2f2;}
+
+#members tr:hover {background-color: #ddd;}
+
+#members th {
+    font-size: 12px;
+    background-color: #4CAF50;
+    color: white;
+}
+
+#members td{
+   font-size: 12px;
+}
+</style>
+
+<script type="text/babel">
+
+const MemberInfo = (props) => {
+
+   const infos = props.info;
+   const index = infos.length;
+
+   /*
+   const status = infos.map((infos) => <p>{infos[0]}</p>);
+   const studentNumber = infos.map((infos) => <p>{infos[1]}</p>);
+   const firstName = infos.map((infos) => <p>{infos[3]}</p>);
+   const lastName = infos.map((infos) => <p>{infos[4]}</p>);
+   const email = infos.map((infos) => <p>{infos[5]}</p>);
+   const phoneNumber = infos.map((infos) => <p>{infos[6]}</p>);
+   const position = infos.map((infos) => <p>{infos[7]}</p>);
+   const equity = infos.map((infos) => <p>{infos[8]}</p>);
+   const affiliation = infos.map((infos) => <p>{infos[9]}</p>);
+   const gender = infos.map((infos) => <p>{infos[10]}</p>);
+   const cohorts = infos.map((infos) => <p>{infos[30]}</p>);
+   const stage = infos.map((infos) => <p>{infos[36]}</p>);
+   */
+
+    return (
+	   <div className = "text-center list-group-item mb-4 p-0">
+       <table className = "text-center table-bordered w-100" id = "members">
+         <tr>
+            <th>Status</th>
+            <th>Student#</th>
+            <th>TeamID</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>E-Mail</th>
+            <th>Phone Nuamber</th>
+            <th>Position</th>
+            <th>Equity</th>
+            <th>Ryerson Affiliation</th>
+            <th>Gender</th>
+         </tr>
+        {
+          props.info.map((memberInfos)=>{
+            let rows = memberInfos.map((members) => {
+            console.log(members);
+            return <td> {members} </td>
+          })
+
+          return <tr> {rows} </tr>
+          })
+        }
+      </table>
+      </div>
+
+	);
+}
+</script>

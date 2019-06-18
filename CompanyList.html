@@ -1,0 +1,34 @@
+<script type="text/babel">
+
+// this Component for list of Companny
+
+const CompanyList = (props) => {
+
+// maping makes the list in UL Tag
+	const names = props.passingValue.map((list,index) => {
+
+
+        return list.show ? <CompanyListItem  list = {[list]}/> : null
+
+	});
+
+
+
+	return (
+
+
+    // if Data is loaded from sheet it shows , otherwise messege shows
+	   <ul className="list-group">
+
+         {props.isDone ? names : <div class="jumbotron">
+         <h1 class="display-4 text-center">Please wait a moment !</h1>
+           </div>
+
+
+         }
+       </ul>
+
+	);
+}
+
+</script>

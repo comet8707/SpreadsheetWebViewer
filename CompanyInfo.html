@@ -1,0 +1,111 @@
+<script type="text/babel">
+  class CompanyInfo extends React.Component {
+
+    constructor(props) {
+      super(props);
+
+      this.state = {
+        mData : [],
+        toggleSwitch : false,
+        isLoaded : false,
+      }
+    }
+
+    // get memberdata from sheets by name
+    getMemberinfo = ()  => {
+    google.script.run.withSuccessHandler(this.setMeminfo).getMemberinfo(this.props.companyName);
+
+    }
+
+    //passing memberData to state and set
+    setMeminfo= (a) => {
+    console.log("clicked1-3");
+     console.log(a);
+    this.setState({mData : a})
+    console.log(this.state.mData);
+
+
+    }
+
+   // handle click evant, once clicked toggle up to toggleswitch shows data
+
+
+
+
+
+   clickHandler = () =>  {
+
+
+    let toggle = this.state.toggleSwitch;
+
+
+    if (toggle == false ) {this.setState({toggleSwitch : true });
+    this.state.isLoaded ? null: this.getMemberinfo();
+    this.setState({isLoaded:true});
+    }
+    else {this.setState({toggleSwitch : false });}
+
+}
+
+
+
+
+
+
+     render() {
+
+     //from parents revieve infomation of a Company and render here;
+
+     const infos = this.props.info;
+
+
+      return (
+
+
+        <div>
+         {this.props.isDone ?
+
+          <div className = "list-group-item list-group-item-secondary mb-3 ">
+         <p><h4>Customer problem:</h4> {infos.problems}</p>
+         <p><h4>
+         Underlying technology:</h4> {infos.underlyingTechs} </p>
+
+       <p>
+         <h4>Target customer:</h4> {infos.targets}
+       </p>
+
+       <p>
+         <h4>Application Link:</h4>{infos.links}
+       </p>
+
+       <p className = "mb-1"><h4>
+         Found Date:</h4>{infos.foundDates}
+       </p>
+
+       <p className = "mb-1"><h4>
+         Supervisor:</h4>{infos.supervisors}
+       </p>
+
+       <p className="list-group-item" onClick={ this.clickHandler  }>  Members  </p>
+
+       </div>
+       :
+       <div class="jumbotron">
+         <h1 class="display-4 text-center">Please wait a moment !</h1>
+           </div>
+
+
+       }
+
+
+       {
+    this.state.toggleSwitch ?
+           <MemberInfo  info = {this.state.mData}   /> :
+           null
+    }
+
+        </div>
+      );
+    }
+  }
+</script>
